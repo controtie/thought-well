@@ -11,6 +11,7 @@
 
     <title>Dashboard</title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Javascript server actions -->
     <script src='../js/server.js'> </script>
 
     <!-- Latest compiled and minified CSS -->
@@ -53,8 +54,9 @@
     <div class="container">
       <!-- User Profile Information -->
       <div class="container">
-        <h2> <img id='profile' src='Morty.png'> </img> Controtie</h2> 
-        <p>I enjoy travelling to different dimensions with my Grandpa Rick, going to highschool and getting schwifty.</p>
+        <h2> <img id='profile' src="morty.png"> </img> Controtie</h2> 
+        <p id='about_me'>I enjoy travelling to different dimensions with my Grandpa Rick, going to highschool and getting schwifty.</p>
+        <a id="myLink" href="#" onclick="edit_about_me();return false;">Edit</a>
       </div> 
 
       <!-- User Activity Information-->
