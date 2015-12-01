@@ -1,3 +1,36 @@
+<?php
+ini_set('display_errors', 1);
+$session_id = $_COOKIE['session_id'];
+
+//create connection.
+$mysqli = new mysqli("localhost", "client", "passphrase", "user_data");
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+} 
+//Get 1. post_id, 2.post_creator, 3. title, 4. creation, 5. body 6. status.
+$stmt = $mysqli->prepare("SELECT * FROM threads WHERE status = 'NO'");
+$stmt->execute();
+$stmt->bind_result($post_id, $post_creator, $title, $creation, $body, $status);
+
+//$page hold the list of all threads
+$page = array();
+//each $well is a single thread.
+$i = 0;
+while($stmt->fetch()) {
+        $well = new stdClass();
+        $well->id = $post_id;
+        $well->user = $post_creator;
+        $well->title = $title;
+        $well->date = $creation;
+        $well->text = $body;
+        $well->status = $status;
+        $page[$i] = $well;
+        $i++;
+}
+
+echo count($page);
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,26 +82,18 @@
         </div>
       </div>
     </nav>
-
     <div class="container">
       <!-- Forum Activity -->
       <h4> Thought Well <button class='btn btn-md' id='post_btn' onclick="location.href = 'post.html'"> Post a question </button> </h4>
-        <div class="well well-sm">
-          <h4> Should I go to college? </h4>
-          <p> I'm not really sure if it's worth the money, and people say its not that important these days...</p>
-        </div>
-        <div class="well well-sm">
-          <h4> Will Shadowfiend ever not be 'in the meta' for Dota 2? </h4>
-          <p> Shadowfiend excels in almost any meta because his early farming rate is so high and effective.</p>
-        </div>
-        <div class="well well-sm">
-          <h4> How do I assign a PHP variable to a MYSQL query? </h4>
-          <p> Look at this documentation for help...</p>
-        </div>
-        <div class="well well-sm">
-          <h4> What's the point of buying bonds at negative interest rates? </h4>
-          <p> Now even the 2 yr German bonds are trading at less than 0% interest... </p>
-        </div>
+
+        <?php 
+          for($x = 0; $x < count($page); $x++) {
+            echo '<div class="well well-sm">';
+            echo '<h4>' . $page[$x]->title . '</h4>';
+            echo '<p>' . $page[$x]->text . '</p>';
+            echo '</div>';
+          }
+        ?>
 
     </div> <!-- /container -->
 
