@@ -1,0 +1,14 @@
+body {
+  min-height: 2000px;
+  padding-top: 70px;
+}
+
+
+#post_body {
+ 	max-width: 600px;
+}
+
+textarea {
+ 	width: 550px;
+ 	height: 200px;
+}
