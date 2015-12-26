@@ -1,6 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 $session_id = $_COOKIE['session_id'];
+$profile = $_GET["name"];
 
 //create connection.
 $mysqli = new mysqli("localhost", "client", "passphrase", "user_data");
@@ -9,8 +10,14 @@ if ($mysqli->connect_error) {
 } 
 //Get everything you need: username, and about me.
 //We can/should change this later to be done by putting more info in if session_id happens to match.
-$stmt = $mysqli->prepare("SELECT about_me, username FROM user_login WHERE session_id=?");
-$stmt->bind_param('s', $session_id);
+if(isset($profile)) {
+  $stmt = $mysqli->prepare("SELECT about_me, username FROM user_login WHERE username=?");
+  $stmt->bind_param('s', $profile);
+}
+else if (isset($session_id)) {
+  $stmt = $mysqli->prepare("SELECT about_me, username FROM user_login WHERE session_id=?");
+  $stmt->bind_param('s', $session_id);
+} 
 $stmt->execute();
 $stmt->bind_result($about_me, $username);
 
@@ -76,21 +83,21 @@ while($threads->fetch()) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Thoughtwell.io</a>
+          <a class="navbar-brand">Thoughtwell.io</a>
         </div>
 
 
         <!-- Top left navbar Elements. Home, Market, Logout. -->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="../well/well.php">Thought Well</a></li>
-            <li><a href="../login/logout.php">Logout</a></li>
+
+            <!-- Handles Nav_bar buttons Button in navbar -->
+            <?php include '../login/navbar_login.php'; ?>
           </ul>
 
           <!-- Top right navbar Elements. Bitcoin Balance. -->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../wallet/wallet.html">Balance: <span class="glyphicon glyphicon-bitcoin"></span> 0.000442</a></li>
+            <li><a href="../wallet/wallet.php">Balance: <span class="glyphicon glyphicon-bitcoin"></span> 0.000442</a></li>
           </ul>
         </div>
       </div>
@@ -106,14 +113,26 @@ while($threads->fetch()) {
 
       <!-- User Activity Information-->
       <h4> User Activity </h4>
-        <?php 
-          for($x = 0; $x < count($page); $x++) {
-            echo '<div class="well well-sm">';
-            echo '<h4>' . $page[$x]->title . '</h4>';
-            echo '<p>' . $page[$x]->text . '</p>';
-            echo '</div>';
-          }
-        ?>
+<?php 
+  for($x = count($page) - 1; $x >= 0 ; $x--) {
+    echo '<div class="container" id="thread_body">';
+    echo   '<div class="well">';
+    echo      '<div id="meta_left">';
+    echo      '<p> Post: <a href = "../well/threads/threads.php?id=' . $page[$x]->id . '">' . $page[$x]->id . '</a> <br> by <a href="dashboard.php?name=' . $page[$x]->user .'">' . $page[$x]->user . '</a> </p>';  
+    echo      '</div>';
+    
+    echo      '<div id="meta_right">';
+    echo      '2 hours old <br> <a> OPEN </a> for 0.0014 BTC </p>';
+    echo      '</div>';
+    
+    echo      '<div class="well well-sm">';
+    echo      '<h4>' . $page[$x]->title . '</h4>';
+    echo      '<p>' . $page[$x]->text . '</p>';
+    echo      '</div>';
+    echo   '</div>';
+    echo '</div> <!-- /container -->';
+  }
+?>
 
 
     </div> <!-- /container -->
@@ -123,6 +142,8 @@ while($threads->fetch()) {
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
   </body>
 </html>
 

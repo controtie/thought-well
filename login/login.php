@@ -24,10 +24,10 @@ while ($query->fetch()) {
 		
 		//Set cookie and send them off to the dashboard.
 		setcookie("session_id", $token, time() + (86400 * 30), "/");  //name, value, expiry, directories where valid.
-		$headers = header('Location: ../dashboard/dashboard.html');
+		$headers = header('Location: ../dashboard/dashboard.php');
 	
 	} else {
-		$headers = header('Location: ../dashboard/dashboard.html');
+		$headers = header('Location: ../dashboard/dashboard.php');
 	}
 }
 
@@ -39,6 +39,4 @@ $update_id->execute(); // perform the query
 }
 $mysqli->close();
 ?>
-
-
 

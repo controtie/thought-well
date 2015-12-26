@@ -7,3 +7,18 @@ body {
 	margin-bottom: 10px;
 	margin-left: 10px;
 }
+
+textarea {
+ 	height: 200px;
+}
+
+#meta_left {
+	display: inline-block;
+	text-align: left;
+}
+
+#meta_right {
+	display: inline-block;
+	float: right;
+	text-align: right;
+}

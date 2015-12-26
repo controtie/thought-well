@@ -10,3 +10,14 @@ body {
 	vertical-align: middle;
 	margin-right: 20px
 }
+
+#meta_left {
+	display: inline-block;
+	text-align: left;
+}
+
+#meta_right {
+	display: inline-block;
+	float: right;
+	text-align: right;
+}
